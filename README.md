@@ -1,9 +1,7 @@
-# Satellite data for coal mine methane — interactive playbook (v4, experimental)
+# Satellite data for coal mine methane — interactive playbook (beta version)
 
 A self-contained interactive guide to choosing and interpreting satellite methane
 data for coal mines. Built for Ember's coal mine methane programme.
-
-**Live site:** enable GitHub Pages (below) and the app is served from `index.html`.
 
 ## Publish on GitHub Pages
 
