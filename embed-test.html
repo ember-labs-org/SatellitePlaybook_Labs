@@ -41,7 +41,14 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/parent@5.5.9"></script>
 <script>
-  iframeResize({ license: "GPLv3", log: false }, "#pb");
+  // ?fixed=4000 -> no resizer, hard-set iframe height (mimics CMS fixed-height embeds)
+  const FIXED = new URLSearchParams(location.search).get("fixed");
+  if (FIXED) {
+    document.getElementById("pb").style.height = parseInt(FIXED, 10) + "px";
+    document.getElementById("status").textContent = "fixed-height mode (" + FIXED + "px) — judge the MAP row";
+  } else {
+    iframeResize({ license: "GPLv3", log: false }, "#pb");
+  }
   const h = document.getElementById("h"), st = document.getElementById("status");
   const frame = document.getElementById("pb");
   let last = 0, stableFor = 0, samples = [];
@@ -60,8 +67,10 @@
     if (Math.abs(now - last) < 2) stableFor++; else stableFor = 0;
     last = now;
     const grewALot = samples.length > 10 && samples[samples.length-1] - samples[0] > 400;
-    if (now > 4000 || grewALot) { st.textContent = "FAIL — runaway growth (vh loop)"; st.className = "bad"; }
-    else if (stableFor > 12) { st.textContent = "PASS — height stable"; st.className = "ok"; }
+    if (!FIXED) {
+      if (now > 4000 || grewALot) { st.textContent = "FAIL — runaway growth (vh loop)"; st.className = "bad"; }
+      else if (stableFor > 12) { st.textContent = "PASS — height stable"; st.className = "ok"; }
+    }
     inspect();
   }, 250);
 
